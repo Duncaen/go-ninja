@@ -1,4 +1,4 @@
-package build
+package ninja
 
 import (
 	"bytes"
@@ -12,11 +12,13 @@ var buildTests = []struct {
 	{
 		Build{Rule: "foo"},
 		`build : foo
-`},
+`,
+	},
 	{
-		Build{Rule: "foo", Outputs: []string{"bar"}},
+		Build{Rule: "foo", Out: []string{"bar"}},
 		`build bar: foo
-`},
+`,
+	},
 }
 
 func TestBuild(t *testing.T) {

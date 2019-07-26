@@ -8,17 +8,20 @@ import (
 
 // Var represents a ninja variable
 type Var struct {
-	Key, Val string
+	Key string
+	Val interface{}
 }
 
 // WriteTo writes the variable to w
 func (v Var) WriteTo(w io.Writer) (int64, error) {
 	wr := util.NewSeqWriter(w)
-	io.WriteString(wr, v.Key)
-	io.WriteString(wr, " = ")
-	io.WriteString(wr, v.Val)
-	io.WriteString(wr, "\n")
+	writeVar(wr, v.Key, v.Val)
 	return wr.Done()
+}
+
+// RequiredVersion returns Version(0), since variables were always supported
+func (v Var) RequiredVersion() Version {
+	return Version(0)
 }
 
 // Vars represents multiple variables
@@ -31,4 +34,9 @@ func (vs Vars) WriteTo(w io.Writer) (int64, error) {
 		v.WriteTo(wr)
 	}
 	return wr.Done()
+}
+
+// RequiredVersion returns Version(0), since variables were always supported
+func (vs Vars) RequiredVersion() Version {
+	return Version(0)
 }
